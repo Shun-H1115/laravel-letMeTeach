@@ -16,4 +16,15 @@ class Post extends Model
     public function category() {
         return $this->belongsTo(Category::class);
     }
+
+    public function file() {
+        return $this->belongsTo(File::class);
+    }
+
+    protected $fillable = [
+        'category_id',
+        'user_id',
+        'title',
+        'comment',
+    ];
 }
