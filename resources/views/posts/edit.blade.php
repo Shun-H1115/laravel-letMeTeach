@@ -14,6 +14,7 @@
         <div class="lg:w-1/2 md:w-2/3 mx-auto">
         <x-auth-validation-errors class="mb-4" :errors="$errors" />
         <form method="post" action="{{ route('posts.update', ['post' => $post->id]) }}" enctype="multipart/form-data">
+            @method('PUT')
             @csrf
           <div class="flex flex-wrap -m-2">
             <div class="p-2 w-full">

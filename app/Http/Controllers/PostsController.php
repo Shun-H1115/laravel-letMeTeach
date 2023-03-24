@@ -119,7 +119,36 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        $post->category_id = $request->category_id;
+        $post->user_id = $request->user_id;
+        $post->title = $request->title;
+        $post->comment = $request->comment;
+        $post->save();
+
+        $post_id_new = $post->id;
+        if($request->files){
+            $file_datas = $request->files;
+            $count = 0;
+            Storage::makeDirectory('public/file/'.$post_id);
+            foreach($file_datas as $file_data){
+                $file = new File;
+                $file->extension = $file_data->extension();
+
+                if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
+                    Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
+                } 
+
+                $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
+                $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
+                $file->save();
+            }            
+        }       
+
+        return redirect()
+        ->route('posts.index')
+        ->with('message', 'アウトプットを更新しました。');
     }
 
     /**
