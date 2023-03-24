@@ -61,7 +61,10 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        //
+        $posts = Post::where('category_id', $id)
+        ->paginateget(10);
+
+        return view('categories.show', compact('posts'));
     }
 
     /**
