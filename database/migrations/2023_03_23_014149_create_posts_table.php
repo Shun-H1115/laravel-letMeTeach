@@ -19,6 +19,7 @@ class CreatePostsTable extends Migration
             $table->foreignId('user_id');
             $table->string('title');
             $table->text('comment');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

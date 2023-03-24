@@ -83,7 +83,8 @@ class PostsController extends Controller
 
         return redirect()
         ->route('posts.index')
-        ->with('message', 'アウトプットを投稿しました。');
+        ->with(['message' => 'アウトプットを投稿しました。',
+        'status' => 'info']);
     }
 
     /**
@@ -148,7 +149,8 @@ class PostsController extends Controller
 
         return redirect()
         ->route('posts.index')
-        ->with('message', 'アウトプットを更新しました。');
+        ->with(['message' => 'アウトプットを更新しました。',
+        'status' => 'info']);
     }
 
     /**
@@ -159,6 +161,11 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Post::findOrFail($id)->delete();
+
+        return redirect()
+        ->route('posts.index')
+        ->with(['message' => 'アウトプットを削除しました。',
+        'status' => 'alert']);
     }
 }
