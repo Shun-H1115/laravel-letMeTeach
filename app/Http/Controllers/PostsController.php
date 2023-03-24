@@ -81,7 +81,9 @@ class PostsController extends Controller
             }            
         }       
 
-        return redirect('/');
+        return redirect()
+        ->route('posts.index')
+        ->with('message', 'アウトプットを投稿しました。');
     }
 
     /**
@@ -103,7 +105,9 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        $post = Post::findOrFail($id);
+
+        return view('posts.edit', compact('post'));
     }
 
     /**

@@ -22,6 +22,7 @@
         </div>
         <!-- sidebar-right -->
         <div class="w-full lg:w-1/2">
+            <x-flash-message status="info" />
             <div class="categoryList_heading">カテゴリ一覧</div>
             <ui class="categoryList_listItem">
             @for($i=0; $i<$num_l; $i++) 
