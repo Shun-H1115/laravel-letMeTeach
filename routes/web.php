@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PostsController;
+use App\Http\Controllers\ReviewsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +26,8 @@ Route::get('/dashboard', function () {
 
 Route::resource('categories', CategoriesController::class);
 
-Route::resource('posts', PostsController::class);
+Route::resource('posts', PostsController::class)->middleware('auth');
+
+Route::resource('posts.reviews', ReviewsController::class)->middleware('auth');
 
 require __DIR__.'/auth.php';

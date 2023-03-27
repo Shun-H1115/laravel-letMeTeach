@@ -32,8 +32,7 @@ class CategoriesSeeder extends Seeder
 
             Category::create([
                 'category_L' => mb_convert_encoding(trim($row[0]), 'UTF-8', 'SJIS'),
-                'category_M' => mb_convert_encoding(trim($row[1]), 'UTF-8', 'SJIS'),
-                'category_S' => mb_convert_encoding(trim($row[2]), 'UTF-8', 'SJIS'),
+                'category_S' => mb_convert_encoding(trim($row[1]), 'UTF-8', 'SJIS'),
             ]);
             $count++;
         }

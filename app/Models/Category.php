@@ -12,4 +12,9 @@ class Category extends Model
     public function posts() {
         return $this->hasMany(Posts::class);
     }
+
+    protected $fillable = [
+        'category_L',
+        'category_S',
+    ];
 }

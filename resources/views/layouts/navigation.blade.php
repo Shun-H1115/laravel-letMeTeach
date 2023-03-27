@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <div class="w-8">
-                        <a href="{{ route('dashboard') }}">
+                        <a href="{{ route('dashboard') }}" class="text-bule-600 text-xl font-bold :hover:bg-gray-600">
                             <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                         </a>
                     </div>
@@ -15,17 +15,16 @@
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">レミティー</strong>
-                    </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">検索</strong>
                     </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">カテゴリ</strong>
                     </x-nav-link>
+                    @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">教える</strong>
                     </x-nav-link>
+                    @endauth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">学ぶ</strong>
                     </x-nav-link>

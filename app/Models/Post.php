@@ -18,8 +18,12 @@ class Post extends Model
         return $this->belongsTo(Category::class);
     }
 
-    public function file() {
-        return $this->belongsTo(File::class);
+    public function files() {
+        return $this->hasMany(File::class);
+    }
+
+    public function reviews() {
+        return $this->hasMany(Review::class);
     }
 
     protected $fillable = [

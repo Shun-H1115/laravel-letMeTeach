@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use InterventionImage;
 
 class PostsController extends Controller
 {
@@ -27,18 +29,10 @@ class PostsController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $category_lists = Category::all()->toArray();
-        $category_l_lists_org = array_column($category_lists, 'category_L');
-        $category_l_lists_unis = array_unique($category_l_lists_org);
-        $count = 0;
-        foreach($category_l_lists_unis as $key => $value){
-            $category_l_lists[$count][0] = $key;
-            $category_l_lists[$count][1] = $value;
-            $count++;
-        }
-        $category_l_lists[$count][0] = count($category_lists);
+        $category_lists_org = Category::orderBy('category_L')->get();
+        $category_lists = $category_lists_org->toArray();
 
-        return view('posts.create', compact('user', 'category_lists', 'category_l_lists'));
+        return view('posts.create', compact('user', 'category_lists'));
     }
 
     /**
@@ -62,6 +56,14 @@ class PostsController extends Controller
         $post->comment = $request->comment;
         $post->save();
 
+        if($request->category_id == "ex"){
+            $category = new Category;
+            $category->category_L = $request->category_L;
+            $category->category_S = $request->category_S;
+            $category->save();
+            $post->category_id = $category->id;
+        }
+
         $post_id = $post->id;
         if($request->files){
             $file_datas = $request->files;
@@ -75,8 +77,8 @@ class PostsController extends Controller
                     Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
                 } 
 
-                $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
-                $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
+                $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
+                $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.'.'.$file_data->extension();
                 $file->save();
             }            
         }       
