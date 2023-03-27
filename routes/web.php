@@ -30,4 +30,8 @@ Route::resource('posts', PostsController::class)->middleware('auth');
 
 Route::resource('posts.reviews', ReviewsController::class)->middleware('auth');
 
+Route::get('/info', function () {
+    return view('info');
+});
+
 require __DIR__.'/auth.php';
