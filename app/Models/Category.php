@@ -13,6 +13,10 @@ class Category extends Model
         return $this->hasMany(Posts::class);
     }
 
+    public function commissions() {
+        return $this->hasMany(Commissions::class);
+    }
+
     protected $fillable = [
         'category_L',
         'category_S',

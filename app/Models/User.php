@@ -16,6 +16,10 @@ class User extends Authenticatable
         return $this->hasMany(Posts::class);
     }
 
+    public function commissions() {
+        return $this->hasMany(Commissions::class);
+    }
+
     public function reviews() {
         return $this->hasMany(Reviews::class);
     }

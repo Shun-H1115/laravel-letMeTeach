@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use InterventionImage;
 
 class PostsController extends Controller
@@ -45,27 +46,30 @@ class PostsController extends Controller
     {
         $request->validate([
             'title' => ['required', 'string', 'max:255'],
-            'category' => ['required', 'string', 'max:255'],
+            'category_id' => ['required'],
             'comment' => ['required', 'string'],
         ]);
 
         $post = new Post;
-        $post->category_id = $request->category_id;
+        
         $post->user_id = $request->user_id;
         $post->title = $request->title;
         $post->comment = $request->comment;
-        $post->save();
 
-        if($request->category_id == "ex"){
+        if($request->category_id == "10000"){
             $category = new Category;
             $category->category_L = $request->category_L;
             $category->category_S = $request->category_S;
             $category->save();
             $post->category_id = $category->id;
+        }else{
+            $post->category_id = $request->category_id;
         }
 
+        $post->save();
+
         $post_id = $post->id;
-        if($request->files){
+        if($request->files!=NULL){
             $file_datas = $request->files;
             $count = 0;
             Storage::makeDirectory('public/file/'.$post_id);
@@ -108,9 +112,12 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
+        $user = Auth::user();
         $post = Post::findOrFail($id);
+        $category_lists_org = Category::orderBy('category_L')->get();
+        $category_lists = $category_lists_org->toArray();
 
-        return view('posts.edit', compact('post'));
+        return view('posts.edit', compact('user', 'post', 'category_lists'));
     }
 
     /**

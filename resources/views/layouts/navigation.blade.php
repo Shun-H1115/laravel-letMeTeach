@@ -17,17 +17,17 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">検索</strong>
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">カテゴリ</strong>
                     </x-nav-link>
                     @auth
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">教える</strong>
-                    </x-nav-link>
-                    @endauth
+                    </x-nav-link>                  
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">学ぶ</strong>
                     </x-nav-link>
+                    @endauth
                 </div>
             </div>
 

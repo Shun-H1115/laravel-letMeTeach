@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            投稿編集
+            {{ $post->title }}
         </h2>
     </x-slot>
 
@@ -27,18 +27,10 @@
               <div class="relative">
                 <label for="category_id" class="leading-7 text-sm text-gray-600">カテゴリ</label></br>
                 <select id="category_id" name="category_id" class="w-1/2 rounded border">
-                  @foreach($category_lists as $category_list)
-                    <option value="{{ $category_list['id'] }}">{{ $category_list['category_L'] }} | {{ $category_list['category_S'] }}</option>
-                  @endforeach
-                  <option value="ex">その他</option>
-                </select></br>
-                <div class="px-4">
-                  <label for="category_id" class="leading-7 text-sm text-gray-600 border-l-4 px-2">カテゴリを新規設定する</label></br>
-                  <label for="category_L" class="leading-5 text-sm text-gray-600 px-2">カテゴリ大</label></br>
-                  <input type="text" id="category_L" name="category_L" value="{{ old('category_L') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                  <label for="category_S" class="leading-5 text-sm text-gray-600 px-2">カテゴリ小</label></br>
-                  <input type="text" id="category_S" name="category_S" value="{{ old('category_S') }}" class="w-full bg-gray-100 bg-opacity-50 rounded border border-gray-300 focus:border-indigo-500 focus:bg-white focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
-                </div>
+                  <option value="0">カテゴリ大</option>
+                  <option value="1">カテゴリ中</option>
+                  <option value="2">カテゴリ小</option>
+                </select>
               </div>
             </div>
             <div class="p-2 w-full">
@@ -60,7 +52,13 @@
             </div>
             <div class="p-2 w-full flex justify-around mt-4">
               <button type="button" onclick="location.href='{{ route('categories.index') }}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
-              <button type="submit" class="text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新</button>
+              <button onclick="location.href='{{ route('posts.edit', ['post' => $post->id]) }}' class="text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">更新</button>
+              <form id="delete_{{$post->id}}" method="post" action="{{ route('posts.destroy', ['post' => $post->id]) }}">
+                @csrf
+                @method('delete')
+                <a href="#" data-id="{{$post->id}}" onclick="deletePost(this)" class="text-white bg-red-600 border-0 py-2 px-8 focus:outline-none hover:bg-red-900 rounded text-lg">削除</a>
+              </form>
+              
             </div>
                      
           </div>
@@ -68,5 +66,14 @@
         </div>
       </div>
     </section>
+
+<script>
+    function deletePost(e) {
+        'use strict';
+        if (confirm('本当に削除しますか？')){
+            document.getElementBByld('delete_'+e.dataset.id).submit();
+        }
+    }
+</script>
 
 </x-app-layout>

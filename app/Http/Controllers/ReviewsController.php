@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Review;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ReviewsController extends Controller
 {
@@ -26,9 +27,9 @@ class ReviewsController extends Controller
     public function create($post)
     {
         $user = Auth::user();
-        $post_c = Post::where('id', $post)->first();
+        $post_create = Post::where('id', $post)->first();
 
-        return view('reviews.create', compact('user', 'post_c'));
+        return view('posts.reviews.create', compact('user', 'post_create'));
     }
 
     /**
@@ -54,8 +55,8 @@ class ReviewsController extends Controller
         $review->save();
 
         return redirect()
-        ->route('posts.show', $reivew->post_id)
-        ->with(['message' => 'アウトプットを投稿しました。',
+        ->route('posts.show', $review->post_id)
+        ->with(['message' => 'レビューを投稿しました。',
         'status' => 'info']);
     }
 
@@ -76,12 +77,13 @@ class ReviewsController extends Controller
      * @param  \App\Models\Review  $review
      * @return \Illuminate\Http\Response
      */
-    public function edit(Review $review, $post)
+    public function edit($review, $post)
     {
+        $user = Auth::user();
         $review_edit = Review::findOrFail($review);
         $post_edit = Post::where('id', $post)->first();
 
-        return view('reviews.edit', compact('review_edit', 'post_edit'));
+        return view('posts.reviews.edit', compact('user', 'review_edit', 'post_edit'));
     }
 
     /**
@@ -93,7 +95,17 @@ class ReviewsController extends Controller
      */
     public function update(Request $request, Review $review)
     {
-        //
+        $review_edit = Review::findOrFail($review);
+
+        $review_edit->title = $request->title;
+        $review_edit->rating_score = $request->rating_score;
+        $review_edit->comment = $request->comment;
+        $review_edit->save();
+
+        return redirect()
+        ->route('posts.index')
+        ->with(['message' => 'レビューを更新しました。',
+        'status' => 'info']);
     }
 
     /**
@@ -108,7 +120,7 @@ class ReviewsController extends Controller
 
         return redirect()
         ->route('posts.show', $post)
-        ->with(['message' => 'アウトプットを削除しました。',
+        ->with(['message' => 'レビューを削除しました。',
         'status' => 'alert']);
     }
 }
