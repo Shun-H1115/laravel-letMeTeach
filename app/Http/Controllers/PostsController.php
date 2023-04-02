@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\Review;
+use App\Models\File;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -70,11 +72,12 @@ class PostsController extends Controller
 
         $post_id = $post->id;
         if($request->files!=NULL){
-            $file_datas = $request->files;
+            $file_datas = $request->file('files');
             $count = 0;
             Storage::makeDirectory('public/file/'.$post_id);
             foreach($file_datas as $file_data){
                 $file = new File;
+                $file->post_id = $post_id;
                 $file->extension = $file_data->extension();
 
                 if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
@@ -82,13 +85,14 @@ class PostsController extends Controller
                 } 
 
                 $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
-                $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.'.'.$file_data->extension();
+                $file->file_path = '/storage/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension();
                 $file->save();
+                $count++;
             }            
         }       
-
+        
         return redirect()
-        ->route('posts.index')
+        ->route('categories.index')
         ->with(['message' => 'アウトプットを投稿しました。',
         'status' => 'info']);
     }
@@ -101,7 +105,49 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+        $post = Post::where('id', $id)->first();
+        $user_id_p = $post->user_id;
+        $user_p = User::where('id', $user_id_p)->first();
+        $post->user_name = $user_p->name;
+        $files = File::where('post_id', $id)->get();
+        $reviews = Review::where('post_id', $id)->get()->toArray();
+        $count = 0;
+        foreach ($reviews as $review){
+            $user_id_r = $review['user_id'];
+            $user_r = User::where('id', $user_id_r)->first();
+            $reviews[$count]['user_name'] = $user_r->name; 
+            $count++;
+        }
+
+        $images = [];
+        $movies = [];
+        $voices = [];
+        $count_i = 0;
+        $count_m = 0;
+        $count_v = 0;
+        foreach ($files as $file){
+            if($file->extension=='jpg' or $file->extension=='png'){
+                $images[$count_i] = $file->toArray();
+                $count_i++;
+            }elseif($file->extension=='mp4'){
+                $movies[$count_m] = $file->toArray();
+                $count_m++;
+            }elseif($file->extension=='mp3'){
+                $voices[$count_v] = $file->toArray();
+                $count_v++;
+            }
+            
+        }
+        if($reviews==[]){
+            $rating_score = NULL;
+            $reviews_avg = NULL;
+        }else{
+            $rating_score = array_column($reviews, 'rating_score');
+            $reviews_avg = array_sum($rating_score) / count($rating_score);
+        }
+        
+
+        return view('posts.show', compact('post', 'images', 'movies', 'voices', 'reviews', 'reviews_avg'));
     }
 
     /**

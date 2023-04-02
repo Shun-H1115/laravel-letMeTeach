@@ -6,7 +6,7 @@
     </x-slot>
 
     <section class="text-gray-600 body-font">
-        <div class="container px-5 pt-24 pb-12 mx-auto bg-blue-100">
+        <div class="container px-5 pt-24 pb-12 mx-auto bg-indigo-100">
             <div class="flex flex-col text-center w-full mb-12">
                 <h1 class="sm:text-3xl text-4xl font-medium title-font mb-4 text-indigo-900 text-bold">レミティー</h1>
                 <h1 class="sm:text-3xl text-4xl font-medium title-font mb-4 text-bold">科学に基づいた学習サイト</h1>

@@ -5,6 +5,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\ReviewsController;
 use App\Http\Controllers\CommissionsController;
+use App\Http\Controllers\FileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,6 @@ Route::resource('commissions', CommissionsController::class)->middleware('auth')
 
 Route::get('/info', function () {
     return view('info');
-});
+})->name('info');
 
 require __DIR__.'/auth.php';

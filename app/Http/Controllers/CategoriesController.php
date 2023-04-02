@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Post;
+use App\Models\User;
+use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -30,7 +32,7 @@ class CategoriesController extends Controller
 
         $user = Auth::user();
         $num_l = count($category_l_lists)-1;
-        // dd($category_lists, $category_l_lists);
+        
         return view('categories.index', compact('category_l_lists', 'category_lists', 'num_l', 'user'));
     }
 
@@ -63,14 +65,14 @@ class CategoriesController extends Controller
      */
     public function show($id)
     {
-        $posts = Post::where('category_id', $id)->paginateget(20);
+        $posts = Post::where('category_id', $id)->get();
         $category = Category::where('id', $id)->first();
         foreach ($posts as $post){
             $user_id = $post->user_id;
-            $user_name = User::where('id', '$user_id')->first();
-            $post->user_name = $user_name; 
+            $user = User::where('id', $user_id)->first();
+            $post->user_name = $user->name; 
         }
-        dd($id);
+        
         return view('categories.show', compact('posts', 'category'));
     }
 

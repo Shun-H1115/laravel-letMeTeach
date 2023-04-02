@@ -14,6 +14,9 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
+                    <x-nav-link :href="route('info')" :active="request()->routeIs('dashboard')">
+                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">初めての方へ</strong>
+                    </x-nav-link>
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">検索</strong>
                     </x-nav-link>
@@ -21,11 +24,11 @@
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">カテゴリ</strong>
                     </x-nav-link>
                     @auth
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">教える</strong>
+                    <x-nav-link :href="route('posts.create')" :active="request()->routeIs('dashboard')">
+                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">アウトプット</strong>
                     </x-nav-link>                  
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">学ぶ</strong>
+                    <x-nav-link :href="route('commissions.create')" :active="request()->routeIs('dashboard')">
+                        <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">リクエスト</strong>
                     </x-nav-link>
                     @endauth
                 </div>
