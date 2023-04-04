@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <section class="text-gray-600 body-font">
+    <section class="text-gray-600 body-font pb-20">
       <div class="container px-5 py-8 mx-auto">
         <div class="flex flex-wrap w-full mb-20 border-b-4 border-indigo-200">
           <div class="lg:w-1/2 w-full mb-6 lg:mb-0">

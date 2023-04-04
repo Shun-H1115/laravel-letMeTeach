@@ -19,8 +19,8 @@ use App\Http\Controllers\FileController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('toppage');
+})->name('toppage');;
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -39,9 +39,5 @@ Route::get('posts.ranking', [PostsController::class, 'ranking'])->name('posts.ra
 Route::get('/info', function () {
     return view('info');
 })->name('info');
-
-Route::get('/toppage', function () {
-    return view('toppage');
-})->name('toppage');
 
 require __DIR__.'/auth.php';
