@@ -25,7 +25,7 @@
                     <div class="w-full h-2 bg-gradient-to-r from-indigo-900 to-gray-100 ...">
                     </div>
                     <div class="rounded-lg h-64 overflow-hidden pt-4">
-                        <img alt="content" class="object-cover object-center h-full w-full bg-white" src="{{ asset('images/info01.png') }}">
+                        <img alt="content" class="object-contain object-center h-full w-full bg-white" src="{{ asset('images/info01.png') }}">
                     </div>
                     <p class="text-base leading-relaxed mt-2">アメリカ国立訓練研究所の研究で、<span class="text-indigo-900 text-bold underline">最も定着率が高い学習方法は人に教えること</span>であることが示された。</br>学んだことを人に教えて一生使える技術にしよう！</p>
                 </div>
@@ -34,7 +34,7 @@
                     <div class="w-full h-2 bg-gradient-to-r from-indigo-900 to-gray-100 ...">
                     </div>
                     <div class="rounded-lg h-64 overflow-hidden pt-4">
-                        <img alt="content" class="object-cover object-center h-full w-full bg-white" src="{{ asset('images/info02.png') }}">
+                        <img alt="content" class="object-contain object-center h-full w-full bg-white" src="{{ asset('images/info02.png') }}">
                     </div>
                     <p class="text-base leading-relaxed mt-2">人の認知特性は3タイプに分けられる。</br>自分の<span class="text-indigo-900 text-bold underline">タイプに合わせた学習方法</span>で効率的なインプットが可能に！</p>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="w-full h-2 bg-gradient-to-r from-indigo-900 to-gray-100 ...">
                     </div>
                     <div class="rounded-lg h-64 overflow-hidden pt-4">
-                        <img alt="content" class="object-cover object-center h-full w-full bg-white" src="{{ asset('images/info03.png') }}">
+                        <img alt="content" class="object-contain object-center h-full w-full bg-white" src="{{ asset('images/info03.png') }}">
                     </div>
                     <p class="text-base leading-relaxed mt-2">アウトプットに対してフィードバックをもらおう！</br><span class="text-indigo-900 text-bold underline">フィードバックを取り入れてアウトプットをよりわかりやすいもの</span>に修正しよう！</p>
                 </div>              
