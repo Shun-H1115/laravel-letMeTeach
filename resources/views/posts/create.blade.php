@@ -26,10 +26,10 @@
               <div class="relative">
                 <label for="category_id" class="leading-7 text-sm text-gray-600 border-l-4 border-indigo-900 px-1">カテゴリ</label></br>
                 <select id="category_id" name="category_id" class="w-1/2 rounded border">
+                  <option value="0">カテゴリを新規設定する</option>
                   @foreach($category_lists as $category_list)
                     <option value="{{ $category_list['id'] }}">{{ $category_list['category_L'] }} | {{ $category_list['category_S'] }}</option>
                   @endforeach
-                  <option value="10000">その他</option>
                 </select></br>
                 <div class="px-4">
                   <label for="category_id" class="leading-7 text-sm text-gray-600 border-l-4 px-2">カテゴリを新規設定する</label></br>

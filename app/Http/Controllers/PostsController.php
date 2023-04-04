@@ -96,7 +96,7 @@ class PostsController extends Controller
         $post->title = $request->title;
         $post->comment = $request->comment;
 
-        if($request->category_id == "10000"){
+        if($request->category_id == "0"){
             $category = new Category;
             $category->category_L = $request->category_L;
             $category->category_S = $request->category_S;
