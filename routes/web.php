@@ -34,8 +34,14 @@ Route::resource('posts.reviews', ReviewsController::class)->middleware('auth');
 
 Route::resource('commissions', CommissionsController::class)->middleware('auth');
 
+Route::get('posts.ranking', [PostsController::class, 'ranking'])->name('posts.ranking');
+
 Route::get('/info', function () {
     return view('info');
 })->name('info');
+
+Route::get('/toppage', function () {
+    return view('toppage');
+})->name('toppage');
 
 require __DIR__.'/auth.php';

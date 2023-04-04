@@ -1,7 +1,7 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            カテゴリ一覧
+            投稿一覧
         </h2>
         <form method="get" action="{{ route('posts.index')}}">
             <div class="lg:flex lg:justify-around">
@@ -29,26 +29,32 @@
     <section class="text-gray-600 body-font">
         <div class="container px-5 py-5 mx-auto">
             <div class="text-center mb-12">
-                <x-flash-message status="session('status')" />
-                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-indigo-900 text-bold">カテゴリ一覧</h1>
+                <h1 class="sm:text-3xl text-2xl font-medium title-font mb-4 text-indigo-900 text-bold">投稿一覧</h1>
             </div>
             <div class="flex flex-wrap -m-4">
-            @for ($i = 0; $i < $num_l; $i++)    
-            <div class="p-4 lg:w-1/4 sm:w-1/2 w-full">
-                <h2 class="font-medium title-font tracking-widest text-gray-900 mb-4 text-sm text-center sm:text-left">{{ $category_l_lists[$i][1] }}</h2>
-                <nav class="flex flex-col sm:items-start sm:text-left text-center items-center -mb-1 space-y-2.5">
-                @for ($j = $category_l_lists[$i][0]; $j < $category_l_lists[$i+1][0]; $j++)
-                <a href="{{ route('categories.show', $category_lists[$j]['id']) }}">
-                    <span class="bg-indigo-100 text-indigo-500 w-4 h-4 mr-2 rounded-full inline-flex items-center justify-center">
-                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" class="w-3 h-3" viewBox="0 0 24 24">
-                        <path d="M20 6L9 17l-5-5"></path>
-                    </svg>
-                    </span>{{ $category_lists[$j]['category_S'] }}
-                </a>
-                @endfor
-                </nav>
+                @if($posts==[])
+                <h2 class="sm:text-2xl text-xl font-medium title-font mb-4">カテゴリに投稿はありません。<h2>
+                @else
+                    @foreach($posts as $post)
+                    <div class="p-4 lg:w-1/4 md:w-1/2">
+                    <a href="{{ route('posts.show', [ $post['id'] ])}}">
+                        <div class="h-full flex flex-col items-center text-center">
+                        @if($post['file_path'])
+                            <img alt="image" class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4" src="{{ asset($post['file_path']) }}">
+                        @else
+                            <img alt="image" class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4" src="{{ asset('/images/noImage.jpeg') }}">
+                        @endif
+                        <div class="w-full">
+                            <h2 class="title-font font-medium text-lg text-gray-900">{{ $post['title'] }} | <span class="text-xs">投稿者：</span>{{ $post['user_name'] }}</h2>
+                            <h3 class="text-gray-500 mb-3"></h3>
+                            <p class="mb-4 line-clamp-3">{{ $post['comment'] }}</p>
+                        </div>
+                        </div>
+                    </a>
+                    </div>
+                    @endforeach
+                @endif
             </div>
-            @endfor
         </div>
     </section>
 </x-app-layout>

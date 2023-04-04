@@ -63,14 +63,28 @@ class CategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        $posts = Post::where('category_id', $id)->get();
+        $posts = Post::where('category_id', $id)->get()->toArray();
         $category = Category::where('id', $id)->first();
+
+        $count=0;
+        $img_files=[];
         foreach ($posts as $post){
-            $user_id = $post->user_id;
+            $user_id = $post['user_id'];
             $user = User::where('id', $user_id)->first();
-            $post->user_name = $user->name; 
+            $posts[$count]['user_name'] = $user->name; 
+
+            $post_id = $post['id'];
+            $orThose = ['extension' => 'png', 'extension' => 'jpg'];
+            $img_file = File::where('post_id', $post_id)->Where($orThose)->first();
+            // $posts[$count]['file_path'] = $img_file->file_path;
+            if ($img_file == NULL){
+                $posts[$count]['file_path'] = NULL;
+            }else{
+                $posts[$count]['file_path'] = $img_file->file_path;
+            }
+            $count++;
         }
         
         return view('categories.show', compact('posts', 'category'));

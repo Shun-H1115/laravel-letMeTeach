@@ -6,7 +6,7 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <div class="w-8">
-                        <a href="{{ route('dashboard') }}" class="text-bule-600 text-xl font-bold :hover:bg-gray-600">
+                        <a href="{{ route('toppage') }}" class="text-bule-600 text-xl font-bold :hover:bg-gray-600">
                             <x-application-logo class="block h-10 w-auto fill-current text-gray-600" />
                         </a>
                     </div>
@@ -17,7 +17,7 @@
                     <x-nav-link :href="route('info')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">初めての方へ</strong>
                     </x-nav-link>
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route('posts.index')" :active="request()->routeIs('dashboard')">
                         <strong class="text-bule-600 text-xl font-bold :hover:bg-gray-600">検索</strong>
                     </x-nav-link>
                     <x-nav-link :href="route('categories.index')" :active="request()->routeIs('dashboard')">

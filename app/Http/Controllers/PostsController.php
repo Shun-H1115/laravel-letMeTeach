@@ -19,9 +19,47 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $category_lists_org = Category::orderBy('category_L')->get();
+        $category_lists = $category_lists_org->toArray();
+        $category_l_lists_org = array_column($category_lists, 'category_L');
+        $category_l_lists_unis = array_unique($category_l_lists_org);
+        $count = 0;
+        foreach($category_l_lists_unis as $key => $value){
+            $category_l_lists[$count][0] = $key;
+            $category_l_lists[$count][1] = $value;
+            $count++;
+        }
+        $category_l_lists[$count][0] = count($category_lists);
+        $num_l = count($category_l_lists)-1;
+
+
+        $posts = Post::availableItems()
+            ->selectCategory($request->category ?? '0')
+            ->searchKeyword($request->keyword)
+            ->get()->toArray();
+
+        $count=0;
+        $img_files=[];
+        foreach ($posts as $post){
+            $user_id = $post['user_id'];
+            $user = User::where('id', $user_id)->first();
+            $posts[$count]['user_name'] = $user->name; 
+
+            $post_id = $post['id'];
+            $orThose = ['extension' => 'png', 'extension' => 'jpg'];
+            $img_file = File::where('post_id', $post_id)->Where($orThose)->first();
+            // $posts[$count]['file_path'] = $img_file->file_path;
+            if ($img_file == NULL){
+                $posts[$count]['file_path'] = NULL;
+            }else{
+                $posts[$count]['file_path'] = $img_file->file_path;
+            }
+            $count++;
+        }
+        
+        return view('posts.index', compact('category_l_lists', 'category_lists', 'num_l', 'posts'));
     }
 
     /**
@@ -146,8 +184,9 @@ class PostsController extends Controller
             $reviews_avg = array_sum($rating_score) / count($rating_score);
         }
         
-
-        return view('posts.show', compact('post', 'images', 'movies', 'voices', 'reviews', 'reviews_avg'));
+        $user = Auth::user();
+        
+        return view('posts.show', compact('post', 'user', 'images', 'movies', 'voices', 'reviews', 'reviews_avg'));
     }
 
     /**
@@ -217,10 +256,40 @@ class PostsController extends Controller
     public function destroy($id)
     {
         Post::findOrFail($id)->delete();
+        dd('削除');
 
         return redirect()
         ->route('posts.index')
         ->with(['message' => 'アウトプットを削除しました。',
         'status' => 'alert']);
+    }
+
+    public function ranking()
+    {
+        $reviews = Review::all()->toArray();
+        $reviews_post_ids = array_column($reviews, 'post_id');
+        $reviews_post_id_list = array_unique($reviews_post_ids);
+        $rankings = [[]];
+        foreach ($reviews_post_id_list as $reviews_post_id){
+            $review_clip = Review::where('post_id', $reviews_post_id)->get()->toArray();
+            $rating_scores = array_column($review_clip, 'rating_score');
+            $rating_score_avg = array_sum($rating_scores) / count($rating_scores);
+            $ranking = Post::where('id', $reviews_post_id)->first()->toArray();
+            $ranking['rating_score'] = $rating_score_avg;
+            $user = User::where('id', $ranking['user_id'])->first()->toArray();
+            $ranking['user_name'] = $user['name'];
+            $rankings[] = $ranking;
+        }
+
+        array_shift($rankings);
+        array_multisort(array_column($rankings, 'rating_score'), SORT_DESC, $rankings);
+
+        $count = min(5, count($reviews_post_id_list));
+        for ($i=0; $i<$count; $i++){
+            $rankings[$i]['rank'] = $i+1;
+        }
+        
+        return view('posts.ranking', compact('rankings'));
+
     }
 }

@@ -16,7 +16,16 @@ class CommissionsController extends Controller
      */
     public function index()
     {
-        //
+        $commissions = Commission::orderBy('created_at')->get()->toArray();
+        $count = count($commissions);
+
+        for($i=0; $i<$count; $i++){
+            $category = Category::where('id', $commissions[$i]['category_id'])->first();
+            $commissions[$i]['category_L'] = $category->category_L;
+            $commissions[$i]['category_S'] = $category->category_S;
+        }
+
+        return view('commissions.index', compact('commissions'));
     }
 
     /**
@@ -65,7 +74,7 @@ class CommissionsController extends Controller
         $commission->save();
 
         return redirect()
-        ->route('posts.index')
+        ->route('commissions.index')
         ->with(['message' => 'リクエストを投稿しました。',
         'status' => 'info']);
     }
@@ -112,7 +121,7 @@ class CommissionsController extends Controller
         $commission_update->save();
 
         return redirect()
-        ->route('posts.index')
+        ->route('commissions.index')
         ->with(['message' => 'リクエストを更新しました。',
         'status' => 'info']);
     }
@@ -128,7 +137,7 @@ class CommissionsController extends Controller
         Commission::findOrFail($commission)->delete();
 
         return redirect()
-        ->route('posts.index')
+        ->route('commissions.index')
         ->with(['message' => 'リクエストを削除しました。',
         'status' => 'alert']);
     }
