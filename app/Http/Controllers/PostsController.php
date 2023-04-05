@@ -112,18 +112,19 @@ class PostsController extends Controller
         if($request->files!=NULL){
             $file_datas = $request->file('files');
             $count = 0;
-            Storage::makeDirectory('public/file/'.$post_id);
+            // Storage::makeDirectory('/file/'.$post_id);
             foreach($file_datas as $file_data){
                 $file = new File;
                 $file->post_id = $post_id;
                 $file->extension = $file_data->extension();
 
-                if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
-                    Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
-                } 
+                // if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
+                //     Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
+                // } 
 
-                $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
-                $file->file_path = '/storage/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension();
+                // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
+                Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension(), $file_data);
+                $file->file_path = '/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension();
                 $file->save();
                 $count++;
             }            
@@ -226,17 +227,19 @@ class PostsController extends Controller
         if($request->files){
             $file_datas = $request->files;
             $count = 0;
-            Storage::makeDirectory('public/file/'.$post_id);
+            // Storage::makeDirectory('public/file/'.$post_id);
             foreach($file_datas as $file_data){
                 $file = new File;
                 $file->extension = $file_data->extension();
 
-                if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
-                    Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
-                } 
+                // if(Storage::exists('public/file/'.$post_id.'/'.$file_data->extension())){
+                //     Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
+                // } 
 
-                $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
-                $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
+                Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension(), $file_data);
+                $file->file_path = '/file/'.$post_id.'/'.$file_data->extension().'/'.$count.'.'.$file_data->extension();
+                // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
+                // $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
                 $file->save();
             }            
         }       

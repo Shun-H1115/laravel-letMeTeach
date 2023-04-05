@@ -21,7 +21,7 @@
           @foreach($images as $image)
             <div class="xl:w-1/2 md:w-1 p-4">           
               <div class="bg-gray-100 p-2 rounded-lg">
-                <img class="rounded object-contain object-center mb-2" alt="hero" src="{{ asset($image['file_path']) }}">
+                <img class="rounded object-contain object-center mb-2" alt="hero" src="{{ Storage::get($image['file_path']) }}">
               </div>     
             </div>
           @endforeach
@@ -31,7 +31,7 @@
           @foreach($movies as $movie)
             <div class="xl:w-1/2 md:w-1 p-4">
               <div class="bg-gray-100 p-6 rounded-lg">
-                <video controls autoplay muted playsinline src="{{ asset($movie['file_path']) }}"></video>
+                <video controls autoplay muted playsinline src="{{ Storage::get($movie['file_path']) }}"></video>
               </div>    
             </div>
           @endforeach
@@ -41,7 +41,7 @@
           @foreach($voices as $voice)
             <div class="xl:w-1/2 md:w-1 p-4">
               <div class="bg-gray-100 p-6 rounded-lg">
-                <audio controls src="{{ asset($voice['file_path']) }}"></audio>
+                <audio controls src="{{ Storage::get($voice['file_path']) }}"></audio>
               </div>
             </div>
           @endforeach
