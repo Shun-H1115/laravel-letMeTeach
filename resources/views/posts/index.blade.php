@@ -40,7 +40,7 @@
                     <a href="{{ route('posts.show', [ $post['id'] ])}}">
                         <div class="h-full flex flex-col items-center text-center">
                         @if($post['file_path'])
-                            <img alt="image" class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4" src="{{ Storage::get($post['file_path']) }}">
+                            <img alt="image" class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4" src="{{ $post['file_path'] }}">
                         @else
                             <img alt="image" class="flex-shrink-0 rounded-lg w-full h-56 object-cover object-center mb-4" src="{{ asset('/images/noImage.jpeg') }}">
                         @endif

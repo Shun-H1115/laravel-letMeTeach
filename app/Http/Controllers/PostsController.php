@@ -54,7 +54,7 @@ class PostsController extends Controller
             if ($img_file == NULL){
                 $posts[$count]['file_path'] = NULL;
             }else{
-                $posts[$count]['file_path'] = $img_file->file_path;
+                $posts[$count]['file_path'] = $this->GetPresignedURL($file->image_path);
             }
             $count++;
         }
@@ -111,7 +111,7 @@ class PostsController extends Controller
         $post_id = $post->id;
         if($request->files!=NULL){
             $file_datas = $request->file('files');
-            $count = 0;
+            
             // Storage::makeDirectory('/file/'.$post_id);
             foreach($file_datas as $file_data){
                 $file = new File;
@@ -123,10 +123,10 @@ class PostsController extends Controller
                 // } 
 
                 // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
-                $file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data, 'public');
-                $file->file_path = Storage::disk('s3')->url($file_path);
+                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data);
+                // $file->file_path = Storage::disk('s3')->url($file_path);
                 $file->save();
-                $count++;
+                
             }            
         }       
         
@@ -165,14 +165,17 @@ class PostsController extends Controller
         $count_m = 0;
         $count_v = 0;
         foreach ($files as $file){
+            $images[$count_i]['post_id'] = $file->post_id;
+            $images[$count_i]['extension'] = $file->extension;
+
             if($file->extension=='jpg' or $file->extension=='png'){
-                $images[$count_i] = $file->toArray();
+                $images[$count_i]['image_path'] = $this->GetPresignedURL($file->image_path);
                 $count_i++;
             }elseif($file->extension=='mp4'){
-                $movies[$count_m] = $file->toArray();
+                $movies[$count_m]['image_path'] = $this->GetPresignedURL($file->image_path);
                 $count_m++;
             }elseif($file->extension=='mp3'){
-                $voices[$count_v] = $file->toArray();
+                $voices[$count_v]['image_path'] = $this->GetPresignedURL($file->image_path);
                 $count_v++;
             }
             
@@ -226,7 +229,7 @@ class PostsController extends Controller
         $post_id_new = $post->id;
         if($request->files){
             $file_datas = $request->files;
-            $count = 0;
+            
             // Storage::makeDirectory('public/file/'.$post_id);
             foreach($file_datas as $file_data){
                 $file = new File;
@@ -236,8 +239,8 @@ class PostsController extends Controller
                 //     Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
                 // } 
 
-                $file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data, 'public');
-                $file->file_path = Storage::disk('s3')->url($file_path);
+                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data);
+                // $file->file_path = Storage::disk('s3')->url($file_path);
                 // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
                 // $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
                 $file->save();
@@ -294,5 +297,17 @@ class PostsController extends Controller
         
         return view('posts.ranking', compact('rankings'));
 
+    }
+
+    public function GetOresignedURL(string $s3_key){
+        $s3 = Storage::disk('s3');
+        $client = $s3->getDriver()->getAdapter()->getClient();
+        $command = $client->getCommand('GetObject', [
+            'Bucket' => env('AWS_BUCKET'),
+            'Key' => $s3_key,
+        ]);
+        $request = $client->createPresignedRequest($command, "+10 minutes");
+
+        return (string) $request->getUri();
     }
 }
