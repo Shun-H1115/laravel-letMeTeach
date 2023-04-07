@@ -109,8 +109,8 @@ class PostsController extends Controller
         $post->save();
 
         $post_id = $post->id;
-        if($request->files!=NULL){
-            $file_datas = $request->file('files');
+        $file_datas = $request->file('files');
+        if($file_datas!=NULL){
             
             // Storage::makeDirectory('/file/'.$post_id);
             foreach($file_datas as $file_data){

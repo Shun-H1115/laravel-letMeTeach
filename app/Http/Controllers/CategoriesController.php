@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\File;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CategoriesController extends Controller
 {
@@ -82,7 +83,7 @@ class CategoriesController extends Controller
             if ($img_file == NULL){
                 $posts[$count]['file_path'] = NULL;
             }else{
-                $posts[$count]['file_path'] = $this->GetPresignedURL($file->image_path);
+                $posts[$count]['file_path'] = $this->GetPresignedURL($img_file->image_path);
             }
             $count++;
         }
