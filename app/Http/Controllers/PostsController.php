@@ -52,9 +52,9 @@ class PostsController extends Controller
             $img_file = File::where('post_id', $post_id)->Where($orThose)->first();
             // $posts[$count]['file_path'] = $img_file->file_path;
             if ($img_file == NULL){
-                $posts[$count]['file_path'] = NULL;
+                $posts[$count] = NULL;
             }else{
-                $posts[$count]['file_path'] = $this->GetPresignedURL($file->image_path);
+                $posts[$count] = $file->toArray();
             }
             $count++;
         }
@@ -165,17 +165,15 @@ class PostsController extends Controller
         $count_m = 0;
         $count_v = 0;
         foreach ($files as $file){
-            $images[$count_i]['post_id'] = $file->post_id;
-            $images[$count_i]['extension'] = $file->extension;
 
             if($file->extension=='jpg' or $file->extension=='png'){
-                $images[$count_i]['image_path'] = $this->GetPresignedURL($file->image_path);
+                $images[$count_i] = $file->toArray();
                 $count_i++;
             }elseif($file->extension=='mp4'){
-                $movies[$count_m]['image_path'] = $this->GetPresignedURL($file->image_path);
+                $movies[$count_m] = $file->toArray();
                 $count_m++;
             }elseif($file->extension=='mp3'){
-                $voices[$count_v]['image_path'] = $this->GetPresignedURL($file->image_path);
+                $voices[$count_v] = $file->toArray();
                 $count_v++;
             }
             
@@ -297,17 +295,5 @@ class PostsController extends Controller
         
         return view('posts.ranking', compact('rankings'));
 
-    }
-
-    public function GetPresignedURL(string $s3_key){
-        $s3 = Storage::disk('s3');
-        $client = $s3->getDriver()->getAdapter()->getClient();
-        $command = $client->getCommand('GetObject', [
-            'Bucket' => env('AWS_BUCKET'),
-            'Key' => $s3_key,
-        ]);
-        $request = $client->createPresignedRequest($command, "+10 minutes");
-
-        return (string) $request->getUri();
     }
 }
