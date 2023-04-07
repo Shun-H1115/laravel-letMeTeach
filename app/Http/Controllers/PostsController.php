@@ -123,8 +123,8 @@ class PostsController extends Controller
                 // } 
 
                 // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.'.'.$file_data->extension());
-                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data);
-                // $file->file_path = Storage::disk('s3')->url($file_path);
+                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data, 'public');
+                $file->file_path = Storage::disk('s3')->url($file_path);
                 $file->save();
                 
             }            
@@ -239,8 +239,8 @@ class PostsController extends Controller
                 //     Storage::makeDirectory('public/file/'.$post_id.'/'.$file_data->extension());
                 // } 
 
-                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data);
-                // $file->file_path = Storage::disk('s3')->url($file_path);
+                $file->file_path = Storage::disk('s3')->putFile('/file/'.$post_id.'/'.$file_data->extension(), $file_data, 'public');
+                $file->file_path = Storage::disk('s3')->url($file_path);
                 // $file_data->storeAs('public/file/'.$post_id.'/'.$file_data->extension(), $count.$file_data->extension());
                 // $file->file_path = 'storage/file/'.$post_id.'/'.$file_data->extension().$count.$file_data->extension();
                 $file->save();
