@@ -81,9 +81,9 @@ class CategoriesController extends Controller
             $img_file = File::where('post_id', $post_id)->Where($orThose)->first();
             // $posts[$count]['file_path'] = $img_file->file_path;
             if ($img_file == NULL){
-                $posts[$count] = NULL;
+                $posts[$count]['file_path'] = NULL;
             }else{
-                $posts[$count] = $img_file->toArray();
+                $posts[$count]['file_path'] = $img_file->toArray();
             }
             $count++;
         }
