@@ -21,7 +21,7 @@
           @foreach($images as $image)
             <div class="xl:w-1/2 md:w-1 p-4">           
               <div class="bg-gray-100 p-2 rounded-lg">
-                <img class="rounded object-contain object-center mb-2 bg-white" alt="hero" src="{{ $image['file_path'] }}">
+                <img class="rounded object-contain object-center mb-2 bg-white border-indigo-900" alt="hero" src="{{ $image['file_path'] }}">
               </div>     
             </div>
           @endforeach
