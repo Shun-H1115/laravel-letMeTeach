@@ -83,7 +83,7 @@ class CategoriesController extends Controller
             if ($img_file == NULL){
                 $posts[$count]['file_path'] = NULL;
             }else{
-                $posts[$count]['file_path'] = $img_file->toArray();
+                $posts[$count]['file_path'] = $img_file->file_path;
             }
             $count++;
         }
