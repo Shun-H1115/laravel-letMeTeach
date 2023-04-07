@@ -299,7 +299,7 @@ class PostsController extends Controller
 
     }
 
-    public function GetOresignedURL(string $s3_key){
+    public function GetPresignedURL(string $s3_key){
         $s3 = Storage::disk('s3');
         $client = $s3->getDriver()->getAdapter()->getClient();
         $command = $client->getCommand('GetObject', [
