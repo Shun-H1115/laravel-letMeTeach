@@ -14,14 +14,14 @@
         </div>  
         <div class="flex items-center lg:w-3/5 mx-auto border-b-4 pb-10 mb-10 border-gray-200 sm:flex-row flex-col">
           <div class="flex-grow sm:text-left text-center mt-6 sm:mt-0">
-            <p class="lg:w-1/2 w-full leading-relaxed">{{ $post->comment }}</p>
+            <p class="w-full leading-relaxed">{{ $post->comment }}</p>
           </div>
         </div>
         <div class="flex flex-wrap -m-4">
           @foreach($images as $image)
             <div class="xl:w-1/2 md:w-1 p-4">           
               <div class="bg-gray-100 p-2 rounded-lg">
-                <img class="rounded object-contain object-center mb-2" alt="hero" src="{{ $image['file_path'] }}">
+                <img class="rounded object-contain object-center mb-2 bg-white" alt="hero" src="{{ $image['file_path'] }}">
               </div>     
             </div>
           @endforeach
