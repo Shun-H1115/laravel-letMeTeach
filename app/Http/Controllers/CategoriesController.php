@@ -77,8 +77,11 @@ class CategoriesController extends Controller
             $posts[$count]['user_name'] = $user->name; 
 
             $post_id = $post['id'];
-            $orThose = ['extension' => 'png', 'extension' => 'jpg'];
-            $img_file = File::where('post_id', $post_id)->Where($orThose)->first();
+            // $orThose = ['extension' => 'png', 'extension' => 'jpg'];
+            $img_file = File::where('post_id', $post_id)
+            ->Where('extension', '=', 'png')
+            ->orWhere('extension', '=', 'jpg')
+            ->first();
             // $posts[$count]['file_path'] = $img_file->file_path;
             if ($img_file == NULL){
                 $posts[$count]['file_path'] = NULL;

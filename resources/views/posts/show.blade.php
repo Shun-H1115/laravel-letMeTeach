@@ -92,7 +92,11 @@
                 <p class="leading-relaxed text-base">{{ $review['comment'] }}</p>
                 @if($review['user_id'] == "$user->id")
                   <button type="button" onclick="location.href='{{ route('posts.reviews.edit', ['post' => $post->id, 'review' => $review['id']]) }}'" class="text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</button>
-                  <button type="button" onclick="location.href='{{ route('posts.reviews.destroy', ['post' => $post->id, 'review' => $review['id']]) }}'" class="text-white bg-orange-400 border-0 py-2 px-8 focus:outline-none hover:bg-orange-200 rounded text-lg">削除</button>
+                  <from action="{{ route('posts.reviews.destroy'), ['post' => $post->id, 'review' => $review['id']]) }}" method="POST">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="text-white bg-orange-400 border-0 py-2 px-8 focus:outline-none hover:bg-orange-200 rounded text-lg">削除</button>
+                  </from>
                 @endif
               </div>
             </div>
@@ -104,7 +108,11 @@
         <button type="button" onclick="location.href='{{ route('categories.show', [$post->id]) }}'" class="bg-gray-200 border-0 py-2 px-8 focus:outline-none hover:bg-gray-400 rounded text-lg">戻る</button>
         @if($post->user_id==$user->id)
           <button type="button" onclick="location.href='{{ route('posts.edit', [$post->id]) }}'" class="text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">編集</button>
-          <button type="button" onclick="location.href='{{ route('posts.destroy', [$post->id]) }}'" class="text-white bg-orange-400 border-0 py-2 px-8 focus:outline-none hover:bg-orange-200 rounded text-lg">削除</button>
+          <form action="{{ route('posts.destroy'), [$post->id] }}" method="POST">
+            @csrf
+            @method('DELETE')
+            <button type="submit" class="text-white bg-orange-400 border-0 py-2 px-8 focus:outline-none hover:bg-orange-200 rounded text-lg">削除</button>
+          </from>
         @else
           <button type="button" onclick="location.href='{{ route('posts.reviews.create', [$post->id]) }}'" class="text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">レビュー</button>
         @endif

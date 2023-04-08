@@ -19,7 +19,7 @@
                     </select>
                     <div class="flex space-x-2 items-center">
                         <div><input name="keyword" class="border border-gray-500 py-2" placeholder="キーワードを入力"></div>
-                        <div><button class="ml-auto text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">検索</button>
+                        <div><button type="submit" class="ml-auto text-white bg-indigo-900 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">検索</button>
                     </div>
                 </div>
             </div>
